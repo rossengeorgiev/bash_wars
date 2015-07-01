@@ -45,8 +45,8 @@ function GameLogic:Init()
   GameRules:SetHeroRespawnEnabled( false )
   --GameRules:SetUseUniversalShopMode( true )
   GameRules:SetSameHeroSelectionEnabled( true )
-  GameRules:SetHeroSelectionTime( 20.0 )
-  GameRules:SetPreGameTime( 30.0)
+  GameRules:SetHeroSelectionTime( 5.0 )
+  GameRules:SetPreGameTime( 5.0)
   GameRules:SetPostGameTime( 60.0 )
   GameRules:SetTreeRegrowTime( 60.0 )
   --GameRules:SetGoldPerTick( 1000.0 )
@@ -270,7 +270,7 @@ function GameLogic:OnNPCSpawned( keys )
   
   if not spawnedUnit:IsIllusion() and spawnedUnit:IsHero() then
     while spawnedUnit:GetLevel() < HERO_START_LEVEL do
-      spawnedUnit:AddExperience (200, 0, false, false)
+      spawnedUnit:AddExperience (50, 0, false, false)
     end
   end
 end
@@ -358,7 +358,6 @@ function GameLogic:OnEntityKilled( keys )
           ParticleManager:SetParticleControl(particle, 0, Vector(0,0,0)) -- no idea
           ParticleManager:SetParticleControl(particle, 1, vOrigin) -- point from which to spawn
 
-          
           hero:AddExperience(400, 0, false, false)
           hero:SetGold(hero:GetGold() + 300, false)
         end

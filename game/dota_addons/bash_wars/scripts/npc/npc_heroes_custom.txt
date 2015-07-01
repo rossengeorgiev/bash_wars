@@ -13,7 +13,7 @@
 		"Ability1"					"spirit_breaker_charge_of_darkness"		// Ability 1
 		"Ability2"					"mirana_leap"		// Ability 2
 		"Ability3"					"spirit_breaker_greater_bash"			// Ability 3
-		"Ability4"					"spirit_breaker_nether_strike"			// Ability 4
+        "Ability4"					"bashwars_kick"			// Ability 4
 		"Ability5"					"attribute_bonus"						// Ability 5
 
     "VisionNighttimeRange"		"1200"
@@ -21,13 +21,13 @@
 
 		// Armor
 		//-------------------------------------------------------------------------------------------------------------
-		"ArmorPhysical"				"3.0"								// Physical protection.
+		"ArmorPhysical"				"8.0"								// Physical protection.
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
 		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
-		"AttackDamageMin"			"31"									// Damage range min.
-		"AttackDamageMax"			"41"									// Damage range max.
+		"AttackDamageMin"			"11"									// Damage range min.
+		"AttackDamageMax"			"21"									// Damage range max.
 		"AttackRate"				"1.7"									// Speed of attack.
 		"AttackAnimationPoint"		"0.6"									// Normalized time in animation cycle to attack.
 		"AttackAcquisitionRange"	"600"									// Range within a target can be acquired.
@@ -49,8 +49,8 @@
 
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"350"									// Speed.
-		"MovementTurnRate"			"0.4"									// Turning rate.
+		"MovementSpeed"				"360"									// Speed.
+		"MovementTurnRate"			"0.2"									// Turning rate.
 
 		"HealthBarOffset"			"160"
 	
