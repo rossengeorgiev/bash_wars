@@ -115,7 +115,7 @@ function CGameMode:OnEntityKilled( event )
 	if killedUnit:IsRealHero() then
 		self.allSpawned = true
 		--print("Hero has been killed")
-		if hero:IsRealHero() and heroTeam ~= killedTeam then
+		if 1==2 and hero:IsRealHero() and heroTeam ~= killedTeam then
         	--print("Granting killer xp")
 			if killedUnit:GetTeam() == self.leadingTeam and self.isGameTied == false then
 				local memberID = hero:GetPlayerID()
