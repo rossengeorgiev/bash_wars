@@ -24,12 +24,7 @@ function CGameMode:OnGameRulesStateChange()
 			nCOUNTDOWNTIMER = 601
 		end
         
-		if GetMapName() == "bash_wars_2teams" then
-			self.TEAM_KILLS_TO_WIN = 20
-		else
-			self.TEAM_KILLS_TO_WIN = 30
-		end
-		--print( "Kills to win = " .. tostring(self.TEAM_KILLS_TO_WIN) )
+		self.TEAM_KILLS_TO_WIN = 20
 
 		CustomNetTables:SetTableValue( "game_state", "victory_condition", { kills_to_win = self.TEAM_KILLS_TO_WIN } );
 
