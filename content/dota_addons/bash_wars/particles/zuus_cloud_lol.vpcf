@@ -45,8 +45,9 @@
 		{
 			_class = "C_OP_LerpEndCapScalar"
 			m_flOutput = 0.000000
-			m_nFieldOutput = 16
+			m_nFieldOutput = 7
 			m_flLerpTime = 0.250000
+			m_bDisableOperator = true
 		},
 		{
 			_class = "C_OP_ColorInterpolate"
@@ -67,7 +68,7 @@
 				158,
 				255,
 			]
-			m_nTintBlendMode = "PARTICLEBLEND_DARKEN"
+			m_nTintBlendMode = "PARTICLEBLEND_DEFAULT"
 		},
 		{
 			_class = "C_INIT_RandomLifeTime"

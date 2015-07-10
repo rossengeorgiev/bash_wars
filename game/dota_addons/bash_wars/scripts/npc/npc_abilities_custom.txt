@@ -79,7 +79,7 @@
     "AbilityCastRange"        "128"
     "AbilityCastPoint"        "0.7"
     "AbilityCooldown"       "12.0"
-    "AbilityUnitDamageType"     "DAMAGE_TYPE_MAGICAL"
+    "AbilityUnitDamageType"     "DAMAGE_TYPE_PHYSICAL"
     "AbilityDamage"         "50"
     
     "precache"
@@ -105,6 +105,13 @@
         "EffectColorA"      "255 0 0"
         "EffectColorB"      "255 0 0"
         "Target"      "CASTER"
+      }
+      
+      "Damage"
+      {
+        "Type"          "DAMAGE_TYPE_PHYSICAL"
+        "Damage"        "50"
+        "Target" "TARGET"
       }
       
       "Knockback"
