@@ -10,15 +10,15 @@ if CGameMode == nil then
 end
 
 function Precache( ctx )
-  PrecacheUnitByNameAsync('npc_dota_hero_spirit_breaker', ctx)
+  PrecacheUnitByNameSync('npc_dota_hero_spirit_breaker', ctx)
+  PrecacheUnitByNameSync('npc_dota_hero_templar_assassin', ctx)
+  PrecacheUnitByNameSync('npc_dota_hero_kunkka', ctx)
   PrecacheModel( "npc_dota_hero_spirit_breaker", ctx )
-  PrecacheUnitByNameAsync('npc_dota_hero_templar_assassin', ctx)
-  PrecacheUnitByNameAsync('npc_dota_hero_kunkka', ctx)
-  
+
   PrecacheResource("particle", "particles/econ/items/kunkka/kunkka_weapon_whaleblade/kunkka_spell_torrent_splash_whaleblade.vpcf", ctx)
   PrecacheResource("particle", "particles/generic_gameplay/lasthit_coins_old_2d_version.vpcf", ctx)
   PrecacheResource("particle", "particles/units/heroes/hero_alchemist/alchemist_lasthit_coins.vpcf", ctx)
-  
+
   PrecacheResource("particle", "particles/trap_mine_explosion.vpcf", ctx)
   PrecacheResource("particle", "particles/zuus_cloud_lol.vpcf", ctx)
 end
@@ -27,7 +27,7 @@ require( "events" )
 require( "util" )
 require( "utility_functions" )
 
---function Activate() 
+--function Activate()
 --   GameLogic:Init()
 --end
 
@@ -41,7 +41,7 @@ end
 ---------------------------------------------------------------------------
 function CGameMode:InitGameMode()
 	print( "Overthrow is loaded." )
-	
+
 --	CustomNetTables:SetTableValue( "test", "value 1", {} );
 --	CustomNetTables:SetTableValue( "test", "value 2", { a = 1, b = 2 } );
 
@@ -114,7 +114,7 @@ function CGameMode:InitGameMode()
 	--GameRules:SetHideKillMessageHeaders( true )
 	GameRules:SetHideKillMessageHeaders( true )
 	GameRules:SetUseUniversalShopMode( false )
-	
+
 	mode:SetCustomGameForceHero(FORCE_HERO_SELECTION)
     mode:SetCameraDistanceOverride( 1500.0 )
 	mode:SetTopBarTeamValuesOverride( true )
@@ -135,13 +135,14 @@ function CGameMode:InitGameMode()
 	ListenToGameEvent( "dota_team_kill_credit", Dynamic_Wrap( CGameMode, 'OnTeamKillCredit' ), self )
 	ListenToGameEvent( "entity_killed", Dynamic_Wrap( CGameMode, 'OnEntityKilled' ), self )
     ListenToGameEvent( "entity_hurt", Dynamic_Wrap( CGameMode, 'OnEntityHurt' ), self )
+	--ListenToGameEvent( "player_connect", Dynamic_Wrap(  CGameMode, 'OnPlayerConnect' ), self)
 	--ListenToGameEvent( "dota_item_picked_up", Dynamic_Wrap( CGameMode, "OnItemPickUp"), self )
 	--ListenToGameEvent( "dota_npc_goal_reached", Dynamic_Wrap( CGameMode, "OnNpcGoalReached" ), self )
 
 	Convars:RegisterCommand( "bashwars_set_timer", function(...) return SetTimer( ... ) end, "Set the timer.", FCVAR_CHEAT )
 	Convars:RegisterCommand( "bashwars_force_end_game", function(...) return self:EndGame( DOTA_TEAM_GOODGUYS ) end, "Force the game to end.", FCVAR_CHEAT )
-	
-	GameRules:GetGameModeEntity():SetThink( "OnThink", self, 1 ) 
+
+	GameRules:GetGameModeEntity():SetThink( "OnThink", self, 1 )
 
 end
 
@@ -198,7 +199,7 @@ function CGameMode:UpdateScoreboard()
 		local clr = self:ColorForTeam( t.teamID )
 
 		-- Scaleform UI Scoreboard
-		local score = 
+		local score =
 		{
 			team_id = t.teamID,
 			team_score = t.teamScore
@@ -252,7 +253,7 @@ function CGameMode:OnThink()
 	for nPlayerID = 0, (DOTA_MAX_TEAM_PLAYERS-1) do
 		self:UpdatePlayerColor( nPlayerID )
 	end
-	
+
 	self:UpdateScoreboard()
 	-- Stop thinking if game is paused
 	if GameRules:IsGamePaused() == true then
@@ -272,7 +273,7 @@ function CGameMode:OnThink()
 				self.countdownEnabled = false
 			else
 				self.TEAM_KILLS_TO_WIN = self.leadingTeamScore + 1
-				local broadcast_killcount = 
+				local broadcast_killcount =
 				{
 					killcount = self.TEAM_KILLS_TO_WIN
 				}
@@ -280,7 +281,7 @@ function CGameMode:OnThink()
 			end
        	end
 	end
-	
+
 	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
 		-- do stuff during the game
 	end
@@ -301,7 +302,7 @@ function CGameMode:GatherAndRegisterValidTeams()
 
 	local numTeams = TableCount(foundTeams)
 	print( "GatherValidTeams - Found spawns for a total of " .. numTeams .. " teams" )
-	
+
 	local foundTeamsList = {}
 	for t, _ in pairs( foundTeams ) do
 		table.insert( foundTeamsList, t )
