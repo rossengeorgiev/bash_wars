@@ -23,7 +23,7 @@ function CGameMode:OnGameRulesStateChange()
 			--self.TEAM_KILLS_TO_WIN = 15
 			nCOUNTDOWNTIMER = 601
 		end
-        
+
 		self.TEAM_KILLS_TO_WIN = 20
 
 		CustomNetTables:SetTableValue( "game_state", "victory_condition", { kills_to_win = self.TEAM_KILLS_TO_WIN } );
@@ -65,9 +65,9 @@ function CGameMode:OnTeamKillCredit( event )
 	local nTeamID = event.teamnumber
 	local nTeamKills = event.herokills
 	local nKillsRemaining = self.TEAM_KILLS_TO_WIN - nTeamKills
-	
+
    GameRules:GetGameModeEntity():SetTopBarTeamValue( nTeamID, nTeamKills )
-    
+
 	local broadcast_kill_event =
 	{
 		killer_id = event.killer_userid,
@@ -78,7 +78,7 @@ function CGameMode:OnTeamKillCredit( event )
 		close_to_victory = 0,
 		very_close_to_victory = 0,
 	}
-    
+
     --DeepPrint(broadcast_kill_event);
     if nKillsRemaining <= 0 then
 		GameRules:SetCustomVictoryMessage( self.m_VictoryMessages[nTeamID] )
@@ -106,7 +106,7 @@ function CGameMode:OnEntityKilled( event )
 	local killedTeam = killedUnit:GetTeam()
     local hero = EntIndexToHScript( event.entindex_attacker )
     local heroTeam = hero:GetTeam()
-        
+
 	if killedUnit:IsRealHero() then
 		self.allSpawned = true
 		--print("Hero has been killed")
@@ -116,7 +116,7 @@ function CGameMode:OnEntityKilled( event )
 				local memberID = hero:GetPlayerID()
 				--PlayerResource:ModifyGold( memberID, 500, true, 0 )
 				hero:AddExperience( 100, 0, false, false )
-                
+
                 local kill_alert =
                 {
                     hero_id = hero:GetClassname()
@@ -126,7 +126,7 @@ function CGameMode:OnEntityKilled( event )
 				hero:AddExperience( 50, 0, false, false )
 			end
 		end
-        
+
 		--Granting XP to all heroes who assisted
 		local allHeroes = HeroList:GetAllHeroes()
 		for _,attacker in pairs( allHeroes ) do
@@ -137,7 +137,7 @@ function CGameMode:OnEntityKilled( event )
 				end
 			end
 		end
-		
+
         CGameMode:SetRespawnTime( killedTeam, killedUnit )
 	end
 end

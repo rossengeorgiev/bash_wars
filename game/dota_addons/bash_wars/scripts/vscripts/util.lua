@@ -88,22 +88,22 @@ function _LogDeepPrintMetaTable( debugMetaTable, prefix )
 	end
 end
 
-function _LogDeepPrintTable(debugInstance, prefix, isOuterScope, chaseMetaTables ) 
+function _LogDeepPrintTable(debugInstance, prefix, isOuterScope, chaseMetaTables )
     prefix = prefix or ""
     local string_accum = ""
-    if debugInstance == nil then 
+    if debugInstance == nil then
 		LogEndLine( prefix .. "<nil>" )
 		return
     end
 	local terminatescope = false
 	local oldPrefix = ""
     if isOuterScope then  -- special case for outer call - so we dont end up iterating strings, basically
-        if type(debugInstance) == "table" then 
+        if type(debugInstance) == "table" then
             LogEndLine( prefix .. "{" )
 			oldPrefix = prefix
             prefix = prefix .. "   "
 			terminatescope = true
-        else 
+        else
             LogEndLine( prefix .. " = " .. (type(debugInstance) == "string" and ("\"" .. debugInstance .. "\"") or debugInstance))
         end
     end
@@ -112,8 +112,8 @@ function _LogDeepPrintTable(debugInstance, prefix, isOuterScope, chaseMetaTables
 	-- First deal with metatables
 	if chaseMetaTables == true then
 		if getmetatable( debugOver ) ~= nil and getmetatable( debugOver ).__index ~= nil then
-			local thisMetaTable = getmetatable( debugOver ).__index 
-			if vlua.find(_LogDeepprint_alreadyseen, thisMetaTable ) ~= nil then 
+			local thisMetaTable = getmetatable( debugOver ).__index
+			if vlua.find(_LogDeepprint_alreadyseen, thisMetaTable ) ~= nil then
 				LogEndLine( string.format( "%s%-32s\t= %s (table, already seen)", prefix, "metatable", tostring( thisMetaTable ) ) )
 			else
 				LogEndLine(prefix .. "metatable = " .. tostring( thisMetaTable ) )
@@ -128,8 +128,8 @@ function _LogDeepPrintTable(debugInstance, prefix, isOuterScope, chaseMetaTables
 	-- Now deal with the elements themselves
 	-- debugOver sometimes a string??
     for idx, data_value in pairs(debugOver) do
-        if type(data_value) == "table" then 
-            if vlua.find(_LogDeepprint_alreadyseen, data_value) ~= nil then 
+        if type(data_value) == "table" then
+            if vlua.find(_LogDeepprint_alreadyseen, data_value) ~= nil then
                 LogEndLine( string.format( "%s%-32s\t= %s (table, already seen)", prefix, idx, tostring( data_value ) ) )
             else
                 local is_array = #data_value > 0
@@ -151,9 +151,9 @@ function _LogDeepPrintTable(debugInstance, prefix, isOuterScope, chaseMetaTables
                 _LogDeepPrintTable(data_value, prefix .. "   ", false, true)
                 LogEndLine(prefix .. (is_array and "]" or "}"))
             end
-		elseif type(data_value) == "string" then 
+		elseif type(data_value) == "string" then
             LogEndLine( string.format( "%s%-32s\t= \"%s\" (%s)", prefix, idx, data_value, type(data_value) ) )
-		else 
+		else
             LogEndLine( string.format( "%s%-32s\t= %s (%s)", prefix, idx, tostring(data_value), type(data_value) ) )
         end
     end
@@ -163,7 +163,7 @@ function _LogDeepPrintTable(debugInstance, prefix, isOuterScope, chaseMetaTables
 end
 
 
-function LogDeepPrintTable( debugInstance, prefix, isPublicScriptScope ) 
+function LogDeepPrintTable( debugInstance, prefix, isPublicScriptScope )
     prefix = prefix or ""
     _LogDeepprint_alreadyseen = {}
     table.insert(_LogDeepprint_alreadyseen, debugInstance)
@@ -182,26 +182,26 @@ _LogDeepprint_alreadyseen = {}
 
 
 -- the inner recursion for the LogDeep print
-function _LogDeepToString(debugInstance, prefix) 
+function _LogDeepToString(debugInstance, prefix)
     local string_accum = ""
-    if debugInstance == nil then 
+    if debugInstance == nil then
         return "LogDeep Print of NULL" .. "\n"
     end
     if prefix == "" then  -- special case for outer call - so we dont end up iterating strings, basically
-        if type(debugInstance) == "table" or type(debugInstance) == "table" or type(debugInstance) == "UNKNOWN" or type(debugInstance) == "table" then 
+        if type(debugInstance) == "table" or type(debugInstance) == "table" or type(debugInstance) == "UNKNOWN" or type(debugInstance) == "table" then
             string_accum = string_accum .. (type(debugInstance) == "table" and "[" or "{") .. "\n"
             prefix = "   "
-        else 
+        else
             return " = " .. (type(debugInstance) == "string" and ("\"" .. debugInstance .. "\"") or debugInstance) .. "\n"
         end
     end
     local debugOver = type(debugInstance) == "UNKNOWN" and getclass(debugInstance) or debugInstance
     for idx, val in pairs(debugOver) do
         local data_value = debugInstance[idx]
-        if type(data_value) == "table" or type(data_value) == "table" or type(data_value) == "UNKNOWN" or type(data_value) == "table" then 
-            if vlua.find(_LogDeepprint_alreadyseen, data_value) ~= nil then 
+        if type(data_value) == "table" or type(data_value) == "table" or type(data_value) == "UNKNOWN" or type(data_value) == "table" then
+            if vlua.find(_LogDeepprint_alreadyseen, data_value) ~= nil then
                 string_accum = string_accum .. prefix .. idx .. " ALREADY SEEN " .. "\n"
-            else 
+            else
                 local is_array = type(data_value) == "table"
                 string_accum = string_accum .. prefix .. idx .. " = ( " .. type(data_value) .. " )" .. "\n"
                 string_accum = string_accum .. prefix .. (is_array and "[" or "{") .. "\n"
@@ -209,12 +209,12 @@ function _LogDeepToString(debugInstance, prefix)
                 string_accum = string_accum .. _LogDeepToString(data_value, prefix .. "   ")
                 string_accum = string_accum .. prefix .. (is_array and "]" or "}") .. "\n"
             end
-        else 
+        else
             --string_accum = string_accum .. prefix .. idx .. "\t= " .. (type(data_value) == "string" and ("\"" .. data_value .. "\"") or data_value) .. "\n"
 			string_accum = string_accum .. prefix .. idx .. "\t= " .. "\"" .. tostring(data_value) .. "\"" .. "\n"
         end
     end
-    if prefix == "   " then 
+    if prefix == "   " then
         string_accum = string_accum .. (type(debugInstance) == "table" and "]" or "}") .. "\n" -- hack for "proving" at end - this is DUMB!
     end
     return string_accum
@@ -223,7 +223,7 @@ end
 
 scripthelp_LogDeepString = "Convert a class/array/instance/table to a string"
 
-function LogDeepToString(debugInstance, prefix) 
+function LogDeepToString(debugInstance, prefix)
     prefix = prefix or ""
     _LogDeepprint_alreadyseen = {}
     table.insert(_LogDeepprint_alreadyseen, debugInstance)
@@ -233,7 +233,7 @@ end
 
 scripthelp_LogDeepPrint = "Print out a class/array/instance/table to the console"
 
-function LogDeepPrint(debugInstance, prefix) 
+function LogDeepPrint(debugInstance, prefix)
     prefix = prefix or ""
     LogEndLine(LogDeepToString(debugInstance, prefix))
 end

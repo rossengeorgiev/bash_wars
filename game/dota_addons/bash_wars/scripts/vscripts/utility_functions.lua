@@ -15,7 +15,7 @@ function PickRandomShuffle( reference_list, bucket )
     if ( #reference_list == 0 ) then
         return nil
     end
-    
+
     if ( #bucket == 0 ) then
         -- ran out of options, refill the bucket from the reference
         for k, v in pairs(reference_list) do
@@ -88,7 +88,7 @@ function CountdownTimer()
     local m01 = minutes - (m10 * 10)
     local s10 = math.floor(seconds / 10)
     local s01 = seconds - (s10 * 10)
-    local broadcast_gametimer = 
+    local broadcast_gametimer =
         {
             timer_minute_10 = m10,
             timer_minute_01 = m01,
