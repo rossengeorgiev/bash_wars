@@ -2,6 +2,7 @@ print ( '[Init] Loading GameLogic' )
 
 _G.nNEUTRAL_TEAM = 4
 _G.nCOUNTDOWNTIMER = 901
+FORCE_HERO_SELECTION = "npc_dota_hero_spirit_breaker"
 
 if CGameMode == nil then
 	_G.CGameMode = class({}) -- put CGameMode in the global scope
@@ -9,17 +10,17 @@ if CGameMode == nil then
 end
 
 function Precache( ctx )
-  PrecacheUnitByNameAsync('npc_dota_hero_spirit_breaker', function(unit) end)
+  PrecacheUnitByNameAsync('npc_dota_hero_spirit_breaker', ctx)
   PrecacheModel( "npc_dota_hero_spirit_breaker", ctx )
-  PrecacheUnitByNameAsync('npc_dota_hero_templar_assassin', function(unit) end)
-  PrecacheUnitByNameAsync('npc_dota_hero_kunkka', function(unit) end)
+  PrecacheUnitByNameAsync('npc_dota_hero_templar_assassin', ctx)
+  PrecacheUnitByNameAsync('npc_dota_hero_kunkka', ctx)
   
-  PrecacheResource( "particle", "particles/econ/items/kunkka/kunkka_weapon_whaleblade/kunkka_spell_torrent_splash_whaleblade.vpcf", ctx)
-  PrecacheResource( "particle", "particles/generic_gameplay/lasthit_coins_old_2d_version.vpcf", ctx)
-  PrecacheResource( "particle", "particles/units/heroes/hero_alchemist/alchemist_lasthit_coins.vpcf", ctx)
+  PrecacheResource("particle", "particles/econ/items/kunkka/kunkka_weapon_whaleblade/kunkka_spell_torrent_splash_whaleblade.vpcf", ctx)
+  PrecacheResource("particle", "particles/generic_gameplay/lasthit_coins_old_2d_version.vpcf", ctx)
+  PrecacheResource("particle", "particles/units/heroes/hero_alchemist/alchemist_lasthit_coins.vpcf", ctx)
   
-  PrecacheResource( "particle", "particles/trap_mine_explosion.vpcf", ctx)
-  PrecacheResource( "particle", "particles/zuus_cloud_lol.vpcf", ctx)
+  PrecacheResource("particle", "particles/trap_mine_explosion.vpcf", ctx)
+  PrecacheResource("particle", "particles/zuus_cloud_lol.vpcf", ctx)
 end
 
 require( "events" )
@@ -101,7 +102,8 @@ function CGameMode:InitGameMode()
 
 	self:GatherAndRegisterValidTeams()
 
-	GameRules:GetGameModeEntity().CGameMode = self
+	local mode = GameRules:GetGameModeEntity()
+	mode.CGameMode = self
 
 	-- Show the ending scoreboard immediately
 	GameRules:SetCustomGameEndDelay( 0 )
@@ -110,21 +112,23 @@ function CGameMode:InitGameMode()
     GameRules:SetSameHeroSelectionEnabled( true )
     GameRules:SetHeroSelectionTime( 20 )
 	--GameRules:SetHideKillMessageHeaders( true )
-    GameRules:GetGameModeEntity():SetCameraDistanceOverride( 1500.0 )
-	GameRules:GetGameModeEntity():SetTopBarTeamValuesOverride( true )
-	GameRules:GetGameModeEntity():SetTopBarTeamValuesVisible( false)
 	GameRules:SetHideKillMessageHeaders( true )
 	GameRules:SetUseUniversalShopMode( false )
-	GameRules:GetGameModeEntity():SetRuneEnabled( 0, false ) --Double Damage
-	GameRules:GetGameModeEntity():SetRuneEnabled( 1, false ) --Haste
-	GameRules:GetGameModeEntity():SetRuneEnabled( 2, false ) --Illusion
-	GameRules:GetGameModeEntity():SetRuneEnabled( 3, false ) --Invis
-	GameRules:GetGameModeEntity():SetRuneEnabled( 4, false ) --Regen
-	GameRules:GetGameModeEntity():SetRuneEnabled( 5, false ) --Bounty
-	GameRules:GetGameModeEntity():SetLoseGoldOnDeath( false )
-	GameRules:GetGameModeEntity():SetFountainPercentageHealthRegen( 20 )
-	GameRules:GetGameModeEntity():SetFountainPercentageManaRegen( 20 )
-	GameRules:GetGameModeEntity():SetFountainConstantManaRegen( 30 )
+	
+	mode:SetCustomGameForceHero(FORCE_HERO_SELECTION)
+    mode:SetCameraDistanceOverride( 1500.0 )
+	mode:SetTopBarTeamValuesOverride( true )
+	mode:SetTopBarTeamValuesVisible( false)
+	mode:SetRuneEnabled( 0, false ) --Double Damage
+	mode:SetRuneEnabled( 1, false ) --Haste
+	mode:SetRuneEnabled( 2, false ) --Illusion
+	mode:SetRuneEnabled( 3, false ) --Invis
+	mode:SetRuneEnabled( 4, false ) --Regen
+	mode:SetRuneEnabled( 5, false ) --Bounty
+	mode:SetLoseGoldOnDeath( false )
+	mode:SetFountainPercentageHealthRegen( 20 )
+	mode:SetFountainPercentageManaRegen( 20 )
+	mode:SetFountainConstantManaRegen( 30 )
 
 	ListenToGameEvent( "game_rules_state_change", Dynamic_Wrap( CGameMode, 'OnGameRulesStateChange' ), self )
 	ListenToGameEvent( "npc_spawned", Dynamic_Wrap( CGameMode, "OnNPCSpawned" ), self )
