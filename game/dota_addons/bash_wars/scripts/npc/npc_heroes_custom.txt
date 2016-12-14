@@ -16,8 +16,8 @@
         "Ability4"					"bashwars_kick"			// Ability 4
 		"Ability5"					"attribute_bonus"						// Ability 5
 
-    "VisionNighttimeRange"		"1200"
-		"VisionDaytimeRange"		"1200"
+    "VisionNighttimeRange"		"1400"
+		"VisionDaytimeRange"		"1400"
 
 		// Armor
 		//-------------------------------------------------------------------------------------------------------------
@@ -49,8 +49,8 @@
 
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"360"									// Speed.
-		"MovementTurnRate"			"0.2"									// Turning rate.
+		"MovementSpeed"				"380"									// Speed.
+		"MovementTurnRate"			"0.8"									// Turning rate.
 
 		"HealthBarOffset"			"160"
 	
